@@ -23,6 +23,7 @@ Route::middleware(['handle.inertia'])->group(function () {
 
         // CRUD Todo
         Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
+        Route::get('/todos/{todo}', [TodoController::class, 'show'])->name('todos.show');
         Route::put('/todos/{todo}', [TodoController::class, 'update'])->name('todos.update');
         Route::delete('/todos/{todo}', [TodoController::class, 'destroy'])->name('todos.destroy');
     });

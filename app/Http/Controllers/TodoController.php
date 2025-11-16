@@ -6,6 +6,7 @@ use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class TodoController extends Controller
 {
@@ -31,6 +32,16 @@ class TodoController extends Controller
         $todo->save();
 
         return back();
+    }
+
+    public function show(Todo $todo)
+    {
+        $this->ensureOwner($todo);
+
+        return Inertia::render('app/TodoDetailPage', [
+            'auth' => Auth::user(),
+            'todo' => $todo,
+        ]);
     }
 
     public function update(Request $request, Todo $todo)
@@ -71,7 +82,8 @@ class TodoController extends Controller
 
         $todo->delete();
 
-        return back();
+        // setelah hapus, selalu balik ke halaman utama
+        return redirect()->route('home');
     }
 
     protected function ensureOwner(Todo $todo): void
